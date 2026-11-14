@@ -8,7 +8,7 @@ import {
   MapPin,
   BarChart3,
   UserCheck,
-  Sliders,
+  Sun,
 } from 'lucide-react';
 import initialApplicantsData from '../data/applicants_sample.json';
 import initialCompaniesData from '../data/companies_sample.json';
@@ -78,48 +78,81 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Top Municipal & Tech Header */}
-      <header className="border-b border-slate-800/90 bg-slate-950/90 backdrop-blur sticky top-0 z-40">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col">
+      {/* Official City of Espoo Top Civic Bar */}
+      <div className="bg-[#00508F] text-white text-xs py-1.5 px-4 sm:px-6 border-b border-[#003E70]">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-flex items-center gap-1.5 font-bold tracking-tight">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FFC72C] ring-2 ring-[#FFC72C]/30" />
+              Espoo · Esbo
+            </span>
+            <span className="text-white/40">|</span>
+            <span className="px-2 py-0.5 rounded bg-white/15 text-white font-medium text-[11px] border border-white/20">
+              Business Espoo | Työllisyys- ja elinkeinopalvelut
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/10 border border-white/20 text-[11px] text-white">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+              <Cpu className="w-3 h-3 text-[#FFC72C]" />
+              <span className="font-medium">Nemotron 3.5 Super VL · B300 Live</span>
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-white/10 border border-white/20 text-[11px] text-white">
+              <UserCheck className="w-3 h-3 text-[#FFC72C]" />
+              <span>Hallintolaki § 45 Human-in-the-Loop</span>
+            </span>
+            <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#FFC72C]/20 border border-[#FFC72C]/40 text-[11px] font-medium text-[#FFC72C]">
+              <Sun className="w-3 h-3" />
+              Civic Light (WCAG AA)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Municipal Header & Navigation */}
+      <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           {/* Brand Title */}
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-sky-500/20 shrink-0">
-              <Compass className="w-6 h-6 text-slate-950 stroke-[2.2]" />
+            <div className="w-10 h-10 rounded-xl bg-[#0066B3] flex items-center justify-center shadow-sm ring-2 ring-[#FFC72C]/60 shrink-0">
+              <Compass className="w-6 h-6 text-white stroke-[2.2]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-extrabold tracking-tight text-white">
-                  ESPOO <span className="text-sky-400">EVENTCOMPASS</span>
+                <h1 className="text-lg font-extrabold tracking-tight text-slate-900">
+                  Espoo <span className="text-[#0066B3]">EventCompass</span>
                 </h1>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-500/15 text-sky-300 border border-sky-500/30">
-                  City of Espoo Challenge
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200">
+                  Junction 2026
                 </span>
               </div>
-              <p className="text-xs text-slate-400">
-                Authentic Competence Curation, Human-in-the-Loop Admissions & Organic Event Discovery
+              <p className="text-xs text-slate-600 font-medium">
+                EventCompass: Osaamispohjainen Tapahtumakuratori · TE24-valmis &amp; Lyyti-yhteensopiva
               </p>
             </div>
           </div>
 
-          {/* Right Event Selector & Live Model Badges */}
-          <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-950/50 border border-emerald-500/30 text-[11px] text-emerald-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <Cpu className="w-3.5 h-3.5" />
-              <span className="font-semibold">Nemotron 3.5 Super VL</span>
-              <span className="text-emerald-400/80 font-mono">(B300 Live)</span>
-            </div>
-
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-sky-950/50 border border-sky-500/30 text-[11px] text-sky-300">
-              <UserCheck className="w-3.5 h-3.5" />
-              <span className="font-semibold">Human-in-the-Loop Gate</span>
+          {/* Right Event Selector & Metadata */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="hidden xl:flex items-center gap-3 text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+              <span className="flex items-center gap-1.5 font-medium">
+                <Calendar className="w-3.5 h-3.5 text-[#0066B3]" />
+                {selectedEvent.date}
+              </span>
+              <span className="text-slate-300">|</span>
+              <span className="flex items-center gap-1.5 font-medium">
+                <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                {selectedEvent.venueCapacity} seats · {selectedEvent.applicantCount} applicants
+              </span>
             </div>
 
             <select
               value={selectedEventId}
               onChange={(e) => setSelectedEventId(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-200 focus:outline-none focus:border-sky-500"
+              aria-label="Select City of Espoo Event"
+              className="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#0066B3] focus:ring-2 focus:ring-[#0066B3]/15"
             >
               {events.map((ev) => (
                 <option key={ev.id} value={ev.id}>
@@ -130,70 +163,57 @@ export function App() {
           </div>
         </div>
 
-        {/* Sub-Bar: Active Event Context & Navigation Tabs */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-1 flex flex-col md:flex-row md:items-center justify-between gap-2 border-t border-slate-900">
-          {/* Navigation Tabs */}
-          <nav className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
+        {/* Navigation Tabs */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 border-t border-slate-100">
+          <nav className="flex items-center gap-1 overflow-x-auto">
             <button
               onClick={() => setActiveTab('cockpit')}
               className={`px-4 py-2.5 text-xs font-bold border-b-2 transition whitespace-nowrap flex items-center gap-2 ${
                 activeTab === 'cockpit'
-                  ? 'border-sky-400 text-sky-300 bg-sky-500/10 rounded-t-lg'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-[#0066B3] text-[#0066B3] bg-[#0066B3]/5'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <ShieldCheck className="w-4 h-4" />
-              1. Curator’s Cockpit (Pre-Event Triage)
+              1. Curator Cockpit
             </button>
 
             <button
               onClick={() => setActiveTab('compass')}
               className={`px-4 py-2.5 text-xs font-bold border-b-2 transition whitespace-nowrap flex items-center gap-2 ${
                 activeTab === 'compass'
-                  ? 'border-emerald-400 text-emerald-300 bg-emerald-500/10 rounded-t-lg'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-[#0066B3] text-[#0066B3] bg-[#0066B3]/5'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <Compass className="w-4 h-4" />
-              2. The Event Compass (On-Site Discovery)
+              2. Event Compass Radar
             </button>
 
             <button
               onClick={() => setActiveTab('intake')}
               className={`px-4 py-2.5 text-xs font-bold border-b-2 transition whitespace-nowrap flex items-center gap-2 ${
                 activeTab === 'intake'
-                  ? 'border-amber-400 text-amber-300 bg-amber-500/10 rounded-t-lg'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-[#0066B3] text-[#0066B3] bg-[#0066B3]/5'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <Sparkles className="w-4 h-4" />
-              3. Live AI Intake & De-Jargonizer
+              3. Live Intake Simulator
             </button>
 
             <button
               onClick={() => setActiveTab('impact')}
               className={`px-4 py-2.5 text-xs font-bold border-b-2 transition whitespace-nowrap flex items-center gap-2 ${
                 activeTab === 'impact'
-                  ? 'border-purple-400 text-purple-300 bg-purple-500/10 rounded-t-lg'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-[#0066B3] text-[#0066B3] bg-[#0066B3]/5'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <BarChart3 className="w-4 h-4" />
-              4. Espoo Scale Simulator & Governance
+              4. Impact &amp; Architecture
             </button>
           </nav>
-
-          {/* Event Quick Metadata */}
-          <div className="hidden xl:flex items-center gap-4 text-[11px] text-slate-400 py-1.5">
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-sky-400" />
-              {selectedEvent.date}
-            </span>
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-              Capacity: {selectedEvent.venueCapacity} seats ({selectedEvent.applicantCount} applicants)
-            </span>
-          </div>
         </div>
       </header>
 
@@ -220,13 +240,13 @@ export function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-4 px-4 sm:px-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 bg-white py-4 px-4 sm:px-6 text-xs text-slate-600">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>
-            <strong>Espoo EventCompass</strong> · Built by Team Bit-Labs for Junction 2026 (City of Espoo “Rethinking Recruitment” Challenge)
+            <strong className="text-slate-900">Espoo · Esbo EventCompass</strong> · Business Espoo | Työllisyys- ja elinkeinopalvelut · Junction 2026
           </span>
-          <span className="text-slate-400">
-            Powered by <strong>NVIDIA Nemotron 3.5 Super VL (1M Context · B300 Cluster)</strong> &amp; <strong>Google DeepMind Gemini</strong>
+          <span className="text-slate-500">
+            Powered by <strong className="text-slate-700">NVIDIA Nemotron 3.5 Super VL (B300)</strong> &amp; <strong className="text-slate-700">Lyyti / TE24 Architecture</strong>
           </span>
         </div>
       </footer>
