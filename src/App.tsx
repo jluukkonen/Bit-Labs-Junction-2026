@@ -4,6 +4,7 @@ import {
   ShieldCheck,
   Sparkles,
   BarChart3,
+  Orbit,
 } from 'lucide-react';
 import initialApplicantsData from '../data/applicants_sample.json';
 import initialCompaniesData from '../data/companies_sample.json';
@@ -13,9 +14,10 @@ import { CuratorCockpit } from './components/CuratorCockpit';
 import { EventCompass } from './components/EventCompass';
 import { LiveIntakeSimulator } from './components/LiveIntakeSimulator';
 import { ImpactAndArchitecture } from './components/ImpactAndArchitecture';
+import { EspooMetaverse } from './components/EspooMetaverse';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'cockpit' | 'compass' | 'intake' | 'impact'>('cockpit');
+  const [activeTab, setActiveTab] = useState<'cockpit' | 'metaverse' | 'compass' | 'intake' | 'impact'>('cockpit');
   const [events] = useState<EventProfile[]>(eventProfilesData as EventProfile[]);
   const [selectedEventId, setSelectedEventId] = useState<string>(events[0].id);
   const [applicants, setApplicants] = useState<Applicant[]>(initialApplicantsData as Applicant[]);
@@ -146,6 +148,18 @@ export function App() {
             </button>
 
             <button
+              onClick={() => setActiveTab('metaverse')}
+              className={`px-4 py-3 text-xs font-semibold border-b-2 transition whitespace-nowrap flex items-center gap-2 ${
+                activeTab === 'metaverse'
+                  ? 'border-[#0066B3] text-[#0066B3]'
+                  : 'border-transparent text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              <Orbit className="w-4 h-4 text-sky-500" />
+              2. 3D Semantic Gravity (Espoo Simulation)
+            </button>
+
+            <button
               onClick={() => setActiveTab('compass')}
               className={`px-4 py-3 text-xs font-semibold border-b-2 transition whitespace-nowrap flex items-center gap-2 ${
                 activeTab === 'compass'
@@ -154,7 +168,7 @@ export function App() {
               }`}
             >
               <Compass className="w-4 h-4" />
-              2. Event Compass Radar
+              3. Event Compass Radar
             </button>
 
             <button
@@ -166,7 +180,7 @@ export function App() {
               }`}
             >
               <Sparkles className="w-4 h-4" />
-              3. Live Intake Simulator
+              4. Live Intake Simulator
             </button>
 
             <button
@@ -178,7 +192,7 @@ export function App() {
               }`}
             >
               <BarChart3 className="w-4 h-4" />
-              4. Impact &amp; Architecture
+              5. Impact &amp; Architecture
             </button>
           </nav>
         </div>
@@ -193,6 +207,10 @@ export function App() {
             onUpdateDecision={handleUpdateDecision}
             onUpdateApplicantReasoning={handleUpdateApplicantReasoning}
           />
+        )}
+
+        {activeTab === 'metaverse' && (
+          <EspooMetaverse applicants={applicants} companies={companies} />
         )}
 
         {activeTab === 'compass' && (
