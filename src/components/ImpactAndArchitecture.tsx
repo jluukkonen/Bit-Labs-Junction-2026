@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 
 export const ImpactAndArchitecture: React.FC = () => {
-  const [applicantVolume, setApplicantVolume] = useState<number>(1500);
-  const [seatCapacity, setSeatCapacity] = useState<number>(400);
+  const [applicantVolume, setApplicantVolume] = useState<number>(540);
+  const [seatCapacity, setSeatCapacity] = useState<number>(150);
   const [showArchitecture, setShowArchitecture] = useState<boolean>(false);
 
   const manualHours = Math.round((applicantVolume * 5) / 60);
@@ -58,14 +58,14 @@ export const ImpactAndArchitecture: React.FC = () => {
 
         <div className="bg-white border border-slate-200 border-t-4 border-t-[#FFC72C] rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
-            <span>Municipal Export</span>
+            <span>Tavata.fi Matchmaking</span>
             <FileSpreadsheet className="w-4 h-4 text-amber-600" />
           </div>
           <div className="text-2xl font-extrabold text-slate-900 mt-2">
-            Lyyti Zero-Friction
+            Tavata.fi Zero-Friction
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            1-click CSV &amp; EU AI Act audit logs
+            1-click Tavata.fi CSV &amp; EU AI Act audit logs
           </p>
         </div>
 
@@ -97,16 +97,16 @@ export const ImpactAndArchitecture: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setApplicantVolume(500);
+                setApplicantVolume(540);
                 setSeatCapacity(150);
               }}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold border transition ${
-                applicantVolume === 500
+                applicantVolume === 540
                   ? 'bg-[#0066B3] text-white border-[#00508F]'
                   : 'bg-[#F8FAFC] text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
             >
-              500 → 150
+              540 → 150 (TalentMatch Dipoli)
             </button>
             <button
               onClick={() => {
@@ -119,7 +119,7 @@ export const ImpactAndArchitecture: React.FC = () => {
                   : 'bg-[#F8FAFC] text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
             >
-              5,000 → 1,500
+              5,000 → 1,500 (Historical Peak)
             </button>
           </div>
         </div>
@@ -290,11 +290,11 @@ export const ImpactAndArchitecture: React.FC = () => {
                       EU AI Act Annex III &amp; Yhdenvertaisuuslaki
                     </span>
                     <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-sky-50 text-[#0066B3] border border-sky-200">
-                      Lyyti Ready
+                      Tavata.fi Ready
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 mt-1.5">
-                    Full human audit trail exported cleanly to Lyyti with zero vendor lock-in.
+                    Full human audit trail exported cleanly to Tavata.fi matchmaking schema with zero vendor lock-in.
                   </p>
                 </div>
               </div>

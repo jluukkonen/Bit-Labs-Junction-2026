@@ -11,7 +11,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { Applicant, CompanyNode } from '../types';
-import { generateLiveConversationSpark } from '../services/nemotronService';
+import { AIModelEngine, generateLiveConversationSpark } from '../services/nemotronService';
 
 interface EventCompassProps {
   applicants: Applicant[];
@@ -24,6 +24,11 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
     [applicants]
   );
 
+  const floorplanBuilders = useMemo(
+    () => approvedBuilders.slice(0, 12),
+    [approvedBuilders]
+  );
+
   const [viewerId, setViewerId] = useState<string>(approvedBuilders[0]?.id || 'app-01');
   const [selectedTargetId, setSelectedTargetId] = useState<string>('comp-nokia-bell');
   const [customSparks, setCustomSparks] = useState<Record<string, { text: string; meta: string }>>(
@@ -32,6 +37,7 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
   const [isGeneratingSpark, setIsGeneratingSpark] = useState<boolean>(false);
   const [lockedIntroductions, setLockedIntroductions] = useState<Set<string>>(new Set());
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [sparkEngine, setSparkEngine] = useState<'gemini-3-flash' | 'nemotron-3.5-b300'>('gemini-3-flash');
 
   const activeViewer = useMemo(
     () => approvedBuilders.find((a) => a.id === viewerId) || approvedBuilders[0],
@@ -89,7 +95,11 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
     if (!activeViewer) return;
     setIsGeneratingSpark(true);
     try {
-      const res = await generateLiveConversationSpark(activeViewer, selectedTarget.data);
+      const res = await generateLiveConversationSpark(
+        activeViewer,
+        selectedTarget.data,
+        sparkEngine as AIModelEngine
+      );
       setCustomSparks((prev) => ({
         ...prev,
         [currentSparkKey]: {
@@ -222,7 +232,7 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
                 })}
 
               {activeViewer &&
-                approvedBuilders.map((peer) => {
+                floorplanBuilders.map((peer) => {
                   if (peer.id === activeViewer.id) return null;
                   const isSameCluster = peer.cluster === activeViewer.cluster;
                   const isSelected = selectedTarget.data.id === peer.id;
@@ -290,7 +300,7 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
             })}
 
             {/* Peer Builder Nodes */}
-            {approvedBuilders.map((builder) => {
+            {floorplanBuilders.map((builder) => {
               const isViewer = builder.id === activeViewer?.id;
               const isSelected = selectedTarget.data.id === builder.id;
 
@@ -354,19 +364,46 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
 
           {/* 2. Conversation Spark (2 sentences max) */}
           <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-4 space-y-3">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
                 <MessageSquareHeart className="w-4 h-4 text-emerald-600" /> Conversation Spark
               </span>
 
-              <button
-                onClick={handleGenerateLiveSpark}
-                disabled={isGeneratingSpark}
-                className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-[11px] font-semibold flex items-center gap-1.5 transition disabled:opacity-50"
-              >
-                <RefreshCw className={`w-3 h-3 ${isGeneratingSpark ? 'animate-spin' : ''}`} />
-                {isGeneratingSpark ? 'Synthesizing...' : 'Re-Synthesize'}
-              </button>
+              <div className="flex items-center gap-1.5">
+                <div className="inline-flex items-center p-0.5 rounded-lg bg-slate-200/70 border border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setSparkEngine('gemini-3-flash')}
+                    className={`px-2 py-0.5 rounded-md text-[10px] font-semibold transition ${
+                      sparkEngine === 'gemini-3-flash'
+                        ? 'bg-white text-[#0066B3] shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Gemini 3 ⚡
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSparkEngine('nemotron-3.5-b300')}
+                    className={`px-2 py-0.5 rounded-md text-[10px] font-semibold transition ${
+                      sparkEngine === 'nemotron-3.5-b300'
+                        ? 'bg-white text-[#0066B3] shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Nemotron
+                  </button>
+                </div>
+
+                <button
+                  onClick={handleGenerateLiveSpark}
+                  disabled={isGeneratingSpark}
+                  className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-[11px] font-semibold flex items-center gap-1.5 transition disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3 h-3 ${isGeneratingSpark ? 'animate-spin' : ''}`} />
+                  {isGeneratingSpark ? 'Synthesizing...' : 'Re-Synthesize'}
+                </button>
+              </div>
             </div>
 
             <p className="text-sm text-slate-900 font-medium leading-relaxed">
@@ -387,7 +424,7 @@ export const EventCompass: React.FC<EventCompassProps> = ({ applicants, companie
           >
             {isLocked ? (
               <>
-                <CheckCircle2 className="w-4 h-4" /> Mutual Interest Locked · Monday 09:00 via Lyyti
+                <CheckCircle2 className="w-4 h-4" /> Mutual Interest Locked · Monday 09:00 via Tavata.fi
               </>
             ) : (
               <>

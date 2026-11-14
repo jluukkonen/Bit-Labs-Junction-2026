@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Sparkles,
   Cpu,
@@ -10,23 +10,94 @@ import {
   ArrowRight,
   ChevronDown,
   ChevronUp,
+  Image as ImageIcon,
+  FileText,
+  Upload,
+  X,
 } from 'lucide-react';
 import { Applicant, LiveTriageResult } from '../types';
-import { deJargonizeCompanyNeed, runLiveNemotronTriage } from '../services/nemotronService';
+import {
+  AIModelEngine,
+  VisualAttachment,
+  deJargonizeCompanyNeed,
+  runLiveNemotronTriage,
+} from '../services/nemotronService';
 
 interface LiveIntakeSimulatorProps {
   onAddApplicantToQueue: (newApplicant: Applicant) => void;
+}
+
+const ENGINE_OPTIONS: ReadonlyArray<{ id: AIModelEngine; label: string }> = [
+  { id: 'nemotron-3.5-b300', label: 'Nemotron 3.5 B300' },
+  { id: 'gemini-3-flash', label: 'Gemini 3 Flash ⚡' },
+  { id: 'gemini-3.1-pro', label: 'Gemini 3.1 Pro 🧠' },
+];
+
+function createSampleThermalPlotPng(): VisualAttachment {
+  const canvas = document.createElement('canvas');
+  canvas.width = 720;
+  canvas.height = 380;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#0F172A';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText('Jetson Orin Nano 8GB · ROS2 Zero-Copy IPC Benchmark', 28, 38);
+
+    ctx.fillStyle = '#475569';
+    ctx.font = '13px monospace';
+    ctx.fillText('4-Cam YOLOv8 + Depth Point-Cloud | 15W TDP Envelope | 60 FPS Target', 28, 62);
+
+    ctx.strokeStyle = '#E2E8F0';
+    ctx.lineWidth = 1;
+    for (let y = 100; y <= 300; y += 50) {
+      ctx.beginPath();
+      ctx.moveTo(60, y);
+      ctx.lineTo(680, y);
+      ctx.stroke();
+    }
+
+    // Bar 1: Standard DDS
+    ctx.fillStyle = '#E11D48';
+    ctx.fillRect(120, 120, 160, 180);
+    ctx.fillStyle = '#0F172A';
+    ctx.font = 'bold 14px monospace';
+    ctx.fillText('64.0 ms', 165, 112);
+    ctx.font = '13px sans-serif';
+    ctx.fillText('Standard DDS (38% drop, 78°C)', 105, 326);
+
+    // Bar 2: iceoryx + CUDA pinned
+    ctx.fillStyle = '#0066B3';
+    ctx.fillRect(410, 265, 160, 35);
+    ctx.fillStyle = '#047857';
+    ctx.font = 'bold 14px monospace';
+    ctx.fillText('11.4 ms (14.2W)', 420, 255);
+    ctx.fillStyle = '#0F172A';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('iceoryx + CUDA Pinned (0% drop, 61°C)', 375, 326);
+  }
+
+  return {
+    fileName: 'orin-nano-thermal-latency-plot.png',
+    mimeType: 'image/png',
+    base64Data: canvas.toDataURL('image/png'),
+  };
 }
 
 export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
   onAddApplicantToQueue,
 }) => {
   const [mode, setMode] = useState<'applicant' | 'company'>('applicant');
+  const [selectedEngine, setSelectedEngine] = useState<AIModelEngine>('gemini-3-flash');
+  const [visualAttachment, setVisualAttachment] = useState<VisualAttachment | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Applicant Form State
   const [name, setName] = useState('Dr. Tariq Al-Mansoor');
   const [role, setRole] = useState('Embedded Silicon & RISC-V Accelerator Architect');
-  const [origin, setOrigin] = useState('Relocated to Espoo · Otaniemi Research Fellow');
+  const [origin] = useState('Relocated to Espoo · Otaniemi Research Fellow');
   const [linkedInClaim, setLinkedInClaim] = useState(
     'Minimalist LinkedIn profile with 95 connections and no summary buzzwords. Lists: "Hardware engineer working on Verilator, Chisel RTL, and low-power neural accelerators."'
   );
@@ -54,16 +125,17 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
     scenarioQuestionForApplicants: string;
     reasoning: string;
     latencyMs: number;
+    modelUsed?: string;
   } | null>(null);
 
   const loadPreset = (type: 'builder' | 'spammer') => {
     setTriageResult(null);
     setAddedToQueue(false);
     setShowReasoningTrace(false);
+    setVisualAttachment(null);
     if (type === 'builder') {
       setName('Dr. Tariq Al-Mansoor');
       setRole('Embedded Silicon & RISC-V Accelerator Architect');
-      setOrigin('Relocated to Espoo · Otaniemi Research Fellow');
       setLinkedInClaim(
         'Minimalist LinkedIn profile with 95 connections and no summary buzzwords. Lists: "Hardware engineer working on Verilator, Chisel RTL, and low-power neural accelerators."'
       );
@@ -76,7 +148,6 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
     } else {
       setName('Maximilian "10x-AI" Sterling');
       setRole('Global Generative AI Thought Leader & Prompt Synergy Architect');
-      setOrigin('Remote / Influencer');
       setLinkedInClaim(
         'Top 0.1% AI Visionary | 45,000+ Followers | Building Hyper-Scalable Quantum-Ready Agentic Ecosystems | Helping Enterprises Unlock 1000x ROI with Holistic Prompt Transformation.'
       );
@@ -86,6 +157,33 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
       setArtifactText(
         'LinkedIn Post: "Why Prompt Engineering Makes Traditional Coding Obsolete in 2026" (Carousel PDF, no code or technical specifications).'
       );
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setVisualAttachment({
+          fileName: file.name,
+          mimeType: file.type || 'image/png',
+          base64Data: reader.result,
+        });
+        if (selectedEngine === 'nemotron-3.5-b300') {
+          setSelectedEngine('gemini-3-flash');
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleAttachSamplePlot = () => {
+    setVisualAttachment(createSampleThermalPlotPng());
+    if (selectedEngine === 'nemotron-3.5-b300') {
+      setSelectedEngine('gemini-3-flash');
     }
   };
 
@@ -100,6 +198,8 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
         linkedInClaim,
         scenarioAnswer,
         artifactText,
+        engine: selectedEngine,
+        visualAttachment: visualAttachment || undefined,
       });
       setTriageResult(res);
     } finally {
@@ -115,6 +215,26 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
       .join('')
       .slice(0, 2)
       .toUpperCase();
+
+    const artifacts = [
+      {
+        title: artifactText.slice(0, 68),
+        type: 'Live Intake Artifact Submission',
+        url: 'https://github.com',
+        verificationNote: artifactText,
+        authenticityScore: Math.max(5, 100 - triageResult.fluffIndex),
+      },
+    ];
+
+    if (visualAttachment) {
+      artifacts.push({
+        title: visualAttachment.fileName,
+        type: `Multimodal Proof (${visualAttachment.mimeType})`,
+        url: 'https://github.com',
+        verificationNote: `Inspected via ${triageResult.modelUsed}`,
+        authenticityScore: Math.max(5, 100 - triageResult.fluffIndex),
+      });
+    }
 
     const newApp: Applicant = {
       id: `app-live-${Date.now()}`,
@@ -146,16 +266,8 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
       scenarioPrompt:
         'Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.',
       scenarioAnswer,
-      verifiedArtifacts: [
-        {
-          title: artifactText.slice(0, 68),
-          type: 'Live Intake Artifact Submission',
-          url: 'https://github.com',
-          verificationNote: artifactText,
-          authenticityScore: Math.max(5, 100 - triageResult.fluffIndex),
-        },
-      ],
-      nemotronReasoning: `[LIVE B300 INFERENCE · ${triageResult.latencyMs}ms]\n${triageResult.reasoningTrace}\n\nSummary Verdict: ${triageResult.summaryVerdict}`,
+      verifiedArtifacts: artifacts,
+      nemotronReasoning: `[${triageResult.modelUsed.toUpperCase()} · ${triageResult.latencyMs}ms]\n${triageResult.reasoningTrace}\n\nSummary Verdict: ${triageResult.summaryVerdict}`,
       strengths: triageResult.strengths,
       risksOrFlags: triageResult.risksOrFlags,
       currentExploration: scenarioAnswer.slice(0, 140) + '...',
@@ -173,25 +285,22 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
   const handleDejargonize = async () => {
     setIsDejargonizing(true);
     try {
-      const res = await deJargonizeCompanyNeed(companyName, rawHrText);
+      const res = await deJargonizeCompanyNeed(companyName, rawHrText, selectedEngine);
       setCompanyResult(res);
     } finally {
       setIsDejargonizing(false);
     }
   };
 
+  const activeEngineLabel =
+    ENGINE_OPTIONS.find((e) => e.id === selectedEngine)?.label.replace(/ [⚡🧠]$/, '') ||
+    'Gemini 3 Flash';
+
   return (
     <div className="space-y-6">
-      {/* Mode Switcher Bar */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:px-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2.5">
-          <Cpu className="w-4 h-4 text-[#0066B3] shrink-0" />
-          <h3 className="text-sm font-bold text-slate-900">
-            Live Intake &amp; De-Jargonizer Sandbox
-          </h3>
-        </div>
-
-        <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 shrink-0">
+      {/* Mode & Dual-Engine Selector Bar */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:px-6 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 shrink-0 self-start lg:self-auto">
           <button
             onClick={() => setMode('applicant')}
             className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
@@ -212,6 +321,27 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
           >
             <Building2 className="w-3.5 h-3.5" /> 2. Company De-Jargonizer
           </button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+            <Cpu className="w-3.5 h-3.5 text-[#0066B3]" /> AI Engine:
+          </span>
+          <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200">
+            {ENGINE_OPTIONS.map((eng) => (
+              <button
+                key={eng.id}
+                onClick={() => setSelectedEngine(eng.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  selectedEngine === eng.id
+                    ? 'bg-white text-[#0066B3] shadow-sm border border-slate-200'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {eng.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -300,6 +430,73 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
               />
             </div>
 
+            {/* Compact Multimodal Proof Attachment */}
+            <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3.5 space-y-2.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                  <ImageIcon className="w-3.5 h-3.5 text-[#0066B3]" />
+                  Multimodal Proof (Screenshot / Diagram / PDF)
+                </span>
+                <div className="flex items-center gap-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-[#0066B3] text-[11px] font-semibold text-slate-700 flex items-center gap-1 transition"
+                  >
+                    <Upload className="w-3 h-3" /> Upload File
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAttachSamplePlot}
+                    className="px-2.5 py-1 rounded-lg bg-sky-50 border border-sky-200 hover:bg-sky-100 text-[11px] font-semibold text-[#0066B3] transition"
+                  >
+                    Attach Sample Orin Thermal Plot (Vision)
+                  </button>
+                </div>
+              </div>
+
+              {visualAttachment && (
+                <div className="flex items-center justify-between gap-3 bg-white border border-slate-200 rounded-lg p-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {visualAttachment.mimeType.startsWith('image/') ? (
+                      <img
+                        src={visualAttachment.base64Data}
+                        alt={visualAttachment.fileName}
+                        className="w-12 h-8 object-cover rounded border border-slate-200 shrink-0"
+                      />
+                    ) : (
+                      <div className="w-10 h-8 rounded bg-purple-50 border border-purple-200 flex items-center justify-center shrink-0">
+                        <FileText className="w-4 h-4 text-purple-700" />
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <div className="text-xs font-semibold text-slate-900 truncate">
+                        {visualAttachment.fileName}
+                      </div>
+                      <div className="text-[11px] text-slate-500">
+                        Ready for Gemini 3 Vision inspection
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setVisualAttachment(null)}
+                    className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700"
+                    title="Remove attachment"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={handleRunEvaluation}
               disabled={isEvaluating}
@@ -307,8 +504,8 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
             >
               <RefreshCw className={`w-4 h-4 ${isEvaluating ? 'animate-spin' : ''}`} />
               {isEvaluating
-                ? 'Evaluating on NVIDIA Nemotron B300...'
-                : 'Run Live NVIDIA Nemotron 3.5 Triage'}
+                ? `Evaluating on ${activeEngineLabel}...`
+                : `Run Live ${activeEngineLabel} Triage`}
             </button>
           </div>
 
@@ -323,7 +520,7 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
                   Ready for Live Evaluation
                 </h4>
                 <p className="text-xs text-slate-500 mt-1.5 max-w-xs">
-                  Choose a preset or enter details on the left to test evidence extraction.
+                  Choose an AI engine above and run triage to compare competence extraction.
                 </p>
               </div>
             ) : (
@@ -462,8 +659,8 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
             >
               <RefreshCw className={`w-4 h-4 ${isDejargonizing ? 'animate-spin' : ''}`} />
               {isDejargonizing
-                ? 'Extracting Engineering Bottlenecks...'
-                : 'Translate into Concrete Problem Space'}
+                ? `Extracting via ${activeEngineLabel}...`
+                : `Translate via ${activeEngineLabel}`}
             </button>
           </div>
 
@@ -482,6 +679,13 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
               </div>
             ) : (
               <div className="space-y-4">
+                {companyResult.modelUsed && (
+                  <div className="flex items-center justify-between text-xs text-slate-500 pb-2 border-b border-slate-100">
+                    <span className="font-semibold text-emerald-700">{companyResult.modelUsed}</span>
+                    <span className="font-mono">{companyResult.latencyMs}ms</span>
+                  </div>
+                )}
+
                 <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4">
                   <div className="text-xs font-bold uppercase text-amber-800">
                     Problem Space

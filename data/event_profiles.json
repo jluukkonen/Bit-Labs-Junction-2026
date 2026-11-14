@@ -1,13 +1,13 @@
 [
   {
     "id": "espoo-deeptech-2026",
-    "title": "Espoo DeepTech & AI Innovation Forum 2026",
-    "date": "November 26, 2026 · Otaniemi & Dipoli (Hybrid)",
-    "format": "Hybrid (In-Person + Online Topic Rooms)",
-    "applicantCount": 542,
+    "title": "Espoo TalentMatch: DeepTech & IT 2026",
+    "date": "November 26, 2026 · Dipoli, Otaniemi (Hybrid: In-Person + Online)",
+    "format": "Hybrid: In-Person + Online",
+    "applicantCount": 540,
     "historicalPeakCount": 5000,
     "venueCapacity": 150,
-    "description": "Flagship City of Espoo competence and matchmaking event connecting international engineering talent, researchers, and Espoo R&D companies across Edge AI, Quantum, CleanTech, and Autonomous Systems.",
+    "description": "Official flagship matchmaking event organized by Espoo Talent Hub (Business Espoo / Työllisyys- ja elinkeinopalvelut) at Dipoli, Otaniemi—connecting verified DeepTech & IT builders with Nokia Bell Labs Espoo, IQM Quantum Computers, VTT Technical Research Centre, ICEYE, and Kempower.",
     "clusters": [
       "Edge AI & Robotics",
       "CleanTech & Smart Grid",
@@ -19,8 +19,8 @@
   },
   {
     "id": "talent-espoo-global-2026",
-    "title": "Talent Espoo: International Engineering & Scaleup Summit",
-    "date": "December 10, 2026 · Keilaniemi Innovation Hub",
+    "title": "Espoo TalentMatch: International Scaleup & R&D Summit",
+    "date": "December 10, 2026 · Keilaniemi & Otaniemi (Hybrid)",
     "format": "In-Person",
     "applicantCount": 1480,
     "historicalPeakCount": 5000,

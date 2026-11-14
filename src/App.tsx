@@ -41,7 +41,7 @@ export function App() {
           ? {
               ...app,
               status: newStatus,
-              reviewedBy: 'Marika / City of Espoo Curator',
+              reviewedBy: 'Marika & Melissa · Espoo Talent Hub',
               reviewedAt: timeStr,
               humanReviewerNote: note,
             }
@@ -86,13 +86,13 @@ export function App() {
             </span>
             <span className="text-white/40">|</span>
             <span className="text-white/90 font-medium">
-              Business Espoo · Työllisyys- ja elinkeinopalvelut
+              Espoo Talent Hub · Business Espoo · Työllisyys- ja elinkeinopalvelut
             </span>
           </div>
 
           <span className="inline-flex items-center gap-1.5 text-[11px] text-white/90 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
-            Nemotron B300 Live
+            Nemotron B300 &amp; Gemini 3 Live
           </span>
         </div>
       </div>
@@ -110,7 +110,7 @@ export function App() {
                 Espoo <span className="text-[#0066B3]">EventCompass</span>
               </h1>
               <p className="text-xs text-slate-500">
-                Osaamispohjainen Tapahtumakuratori · TE24-valmis &amp; Lyyti-yhteensopiva
+                Espoo TalentMatch: DeepTech &amp; IT 2026 · Dipoli, Otaniemi (Hybrid) · TE24 &amp; Tavata.fi Ready
               </p>
             </div>
           </div>
@@ -125,7 +125,7 @@ export function App() {
             >
               {events.map((ev) => (
                 <option key={ev.id} value={ev.id}>
-                  {ev.title} ({ev.venueCapacity} seats)
+                  {ev.title} · {ev.applicantCount} applicants → {ev.venueCapacity} seats
                 </option>
               ))}
             </select>
@@ -206,6 +206,7 @@ export function App() {
             selectedEvent={selectedEvent}
             onUpdateDecision={handleUpdateDecision}
             onUpdateApplicantReasoning={handleUpdateApplicantReasoning}
+            onOpenInMetaverse={() => setActiveTab('metaverse')}
           />
         )}
 
@@ -231,7 +232,7 @@ export function App() {
             <strong className="text-slate-900">Espoo · Esbo EventCompass</strong> · Business Espoo | Työllisyys- ja elinkeinopalvelut · Junction 2026
           </span>
           <span className="text-slate-500">
-            Powered by <strong className="text-slate-700">NVIDIA Nemotron 3.5 Super VL (B300)</strong> &amp; <strong className="text-slate-700">Lyyti / TE24 Architecture</strong>
+            Powered by <strong className="text-slate-700">NVIDIA Nemotron 3.5 Super VL (B300)</strong>, <strong className="text-slate-700">Google DeepMind Gemini 3</strong> &amp; <strong className="text-slate-700">Tavata.fi / TE24 Matchmaking Schema</strong>
           </span>
         </div>
       </footer>
