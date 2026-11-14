@@ -1,0 +1,451 @@
+[
+  {
+    "id": "app-01",
+    "name": "Priya Nair",
+    "role": "Embedded Rust & Edge ML Systems Engineer",
+    "origin": "Relocated to Espoo from Bengaluru · Aalto MSc Alumni",
+    "avatarInitials": "PN",
+    "persona": "Builder / Engineer",
+    "cluster": "Edge AI & Robotics",
+    "competenceScore": 96,
+    "legacyLinkedInScore": 48,
+    "fluffIndex": 6,
+    "evidenceCategory": "Verified Public Code / Benchmark",
+    "alignmentType": "Direct Bottleneck Match",
+    "demonstratedMechanism": "Zero-copy iceoryx shared memory ring buffer + CUDA pinned memory bypassing DDS serialization on Orin Nano (latency reduced from 64ms to 11.4ms at 14.2W).",
+    "status": "approved",
+    "reviewedBy": "Marika K. (City of Espoo)",
+    "reviewedAt": "2026-11-13 19:40",
+    "humanReviewerNote": "Outstanding hardware-level evidence. Classic example of quiet builder missed by keyword scrapers.",
+    "linkedInSummaryClaim": "Minimalist LinkedIn profile (only 140 words, no buzzwords, 85 connections). Lists 'Embedded Software Engineer working on C/Rust drivers and sensor pipelines.'",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "On an Orin Nano 8GB module running ROS2 Humble, our 4-camera YOLOv8 + depth point-cloud fusion node was dropping 38% of frames due to CPU-GPU memcpy overhead across standard DDS serialization. I bypassed standard rclcpp serialization by writing a zero-copy iceoryx shared-memory ring buffer mapped directly into CUDA pinned memory, and quantized the backbone to INT8 with custom calibration for dark factory lighting. Latency dropped from 64ms to 11.4ms at 14.2W.",
+    "verifiedArtifacts": [
+      {
+        "title": "iceoryx-cuda-ros2-bridge (GitHub Repository)",
+        "type": "GitHub Codebase · 412 Stars · Rust & CUDA C++",
+        "url": "https://github.com/pnair-embedded/iceoryx-cuda-ros2-bridge",
+        "verificationNote": "Contains 84 commits over 9 months, reproducible latency benchmarks, and CMake build scripts.",
+        "authenticityScore": 98
+      },
+      {
+        "title": "Thermal Throttling Telemetry Log (Jetson Orin 15W Envelope)",
+        "type": "Hardware Benchmark Trace",
+        "url": "https://gist.github.com/pnair-embedded/orin-thermal-trace",
+        "verificationNote": "Verified tegrastats logs showing sustained 60 FPS inference without thermal clock drop.",
+        "authenticityScore": 95
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Verified Public Code + Empirical Benchmark trace.\n2. Propositional Triad: [Problem: DDS memcpy drop 38% frames] → [Mechanism: iceoryx zero-copy CUDA pinned buffer + INT8 calibration] → [Outcome: 64ms to 11.4ms at 14.2W envelope].\n3. Room Coverage: Matches Nokia Bell Labs Espoo active bottleneck in 15W industrial edge spatial intelligence.\n4. Human Review Recommendation: Priority admit for Edge AI room cluster balance.",
+    "strengths": [
+      "Zero-copy ROS2 / CUDA shared memory IPC architecture",
+      "Real-world INT8 quantization under 15W thermal limits",
+      "Production Rust & C++ embedded firmware track record"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Eliminating IPC serialization bottlenecks between micro-ROS real-time actuators and quantized vision transformers on 15W edge boards.",
+    "radarCoords": { "x": 27, "y": 31 },
+    "sparks": {
+      "comp-nokia-bell": "Both you and Kaisa's team at Nokia Bell Labs are tackling zero-copy shared memory IPC between ROS2 nodes and TensorRT on 15W modules. Ask Kaisa how they handle timestamp synchronization when LiDAR packets arrive out-of-order.",
+      "comp-kempower": "Your embedded Rust DMA ring-buffer design maps directly to Mikko's high-frequency CAN-bus telemetry bottlenecks at Kempower.",
+      "app-04": "You and Mateo both build low-latency control loops for physical robotics—compare your iceoryx CUDA bridge with his micro-ROS actuator firmware."
+    }
+  },
+  {
+    "id": "app-02",
+    "name": "Victor 'Visionary' Sterling",
+    "role": "Chief AI Thought Leader & Synergistic Prompt Evangelist",
+    "origin": "Helsinki / Remote",
+    "avatarInitials": "VS",
+    "persona": "Startup Founder",
+    "cluster": "Sovereign AI & Cloud Infra",
+    "competenceScore": 19,
+    "legacyLinkedInScore": 95,
+    "fluffIndex": 92,
+    "evidenceCategory": "Self-Reported Claims Only",
+    "alignmentType": "Exploration & High Learning Agility",
+    "demonstratedMechanism": "Unsubstantiated corporate generalizations without physical, computational, or business constraints.",
+    "status": "flagged",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "humanReviewerNote": "",
+    "linkedInSummaryClaim": "10x AI Visionary | Forbes-minded Disruptor | Spearheading Paradigm-Shifting Agentic Quantum-LLM Blockchain Ecosystems | Helping Fortune 500s Unlock Hyper-Growth via Holistic Generative Transformation (14,200 followers).",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "In today's fast-paced digital renaissance, we leveraged cutting-edge hyper-scalable next-gen neural architectures to synergize cross-functional multi-agent paradigms. By orchestrating state-of-the-art quantum-ready LLM pipelines and empowering holistic stakeholder alignment, we achieved a 500% paradigm shift in end-to-end cognitive velocity while maintaining robust enterprise governance.",
+    "verifiedArtifacts": [
+      {
+        "title": "LinkedIn Viral Carousel: 'Top 10 ChatGPT Prompts to Replace Your Engineering Team'",
+        "type": "Social Media Post (AI-Generated)",
+        "url": "https://linkedin.com/posts/vsterling-ai-thought-leader",
+        "verificationNote": "Zero code repositories, zero technical architecture diagrams, 100% synthetic LLM marketing prose.",
+        "authenticityScore": 8
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Self-reported claims only. No verifiable technical, operational, or business artifact supplied.\n2. Propositional Triad: Incomplete. Contains ungrounded boosters ('synergize', 'paradigm-shifting') but lacks concrete failure modes or trade-offs.\n3. Room Coverage: High risk of sales/recruitment solicitation rather than collaborative problem-solving.\n4. Human Review Recommendation: Flagged for curator audit. Recommend waitlist or general visitor tier.",
+    "strengths": [
+      "High social media engagement"
+    ],
+    "risksOrFlags": [
+      "92% AI Fluff Index: Synthetic marketing clichés without empirical trade-offs",
+      "No verifiable engineering, research, or operational artifacts submitted",
+      "Fails to identify a single real-world physical or systems bottleneck"
+    ],
+    "currentExploration": "Networking for generic AI consulting sales.",
+    "radarCoords": { "x": 88, "y": 86 },
+    "sparks": {
+      "comp-iceye": "Low technical overlap detected; applicant lacks concrete distributed systems or SAR processing artifacts."
+    }
+  },
+  {
+    "id": "app-03",
+    "name": "Dr. Lukas Lindqvist",
+    "role": "Postdoctoral Researcher in Cryo-FPGA Quantum Control",
+    "origin": "Otaniemi, Espoo · VTT / Aalto Quantum",
+    "avatarInitials": "LL",
+    "persona": "Researcher",
+    "cluster": "Quantum & Semiconductors",
+    "competenceScore": 94,
+    "legacyLinkedInScore": 61,
+    "fluffIndex": 9,
+    "evidenceCategory": "Peer-Reviewed Research / Poster",
+    "alignmentType": "Direct Bottleneck Match",
+    "demonstratedMechanism": "Fixed-point VHDL matched-filter pipeline mapped into DSP48E2 slices on Xilinx Zynq RFSoC, trading 4 bits dynamic range for deterministic 62ns latency.",
+    "status": "approved",
+    "reviewedBy": "Marika K. (City of Espoo)",
+    "reviewedAt": "2026-11-13 20:05",
+    "humanReviewerNote": "Direct match for IQM and Espoo semiconductor cluster.",
+    "linkedInSummaryClaim": "Academic LinkedIn rarely updated since 2023. Lists 'Doctoral Candidate in Applied Physics, Low-Temperature Electronics.'",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "During fast mid-circuit measurement on a 16-qubit transmon array, standard LUT-based state discrimination on our Xilinx Zynq UltraScale+ RFSoC exceeded our 120ns coherence budget due to AXI4-Stream FIFO buffering jitter. I rewrote the demodulation and matched-filter pipeline in fixed-point VHDL directly inside the DSP48E2 slices, trading 4 bits of dynamic range for deterministic 62ns clock-cycle latency.",
+    "verifiedArtifacts": [
+      {
+        "title": "rfsoc-sub70ns-qubit-readout (VHDL & Python Verification Suite)",
+        "type": "GitHub / Zenodo Research Artifact",
+        "url": "https://github.com/llindqvist-q/rfsoc-sub70ns-qubit-readout",
+        "verificationNote": "Includes Vivado timing closure reports, testbench waveforms, and hardware-in-the-loop readout fidelity plots.",
+        "authenticityScore": 97
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Peer-reviewed research verification suite & Vivado timing closure logs.\n2. Propositional Triad: [Problem: AXI4-Stream FIFO jitter exceeded 120ns budget] → [Mechanism: Fixed-point VHDL in DSP48E2 slices] → [Outcome: 62ns deterministic latency at cost of 4 bits dynamic range].\n3. Room Coverage: Direct alignment with IQM Quantum Computers' stated bottleneck on Keilaniemi feedlines.\n4. Human Review Recommendation: Priority admit for Quantum/Semiconductor cluster balance.",
+    "strengths": [
+      "Deterministic sub-70ns RFSoC FPGA pulse & readout design",
+      "Fixed-point VHDL DSP slice optimization",
+      "Deep familiarity with Otaniemi cryogenic testbeds"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Deterministic sub-70ns active reset feedback loops on RFSoC FPGAs for superconducting quantum processors.",
+    "radarCoords": { "x": 69, "y": 29 },
+    "sparks": {
+      "comp-iqm": "You achieved 62ns deterministic readout on Zynq RFSoC by bypassing AXI4-Stream FIFOs—ask Dr. Heikki Rantanen at IQM how they manage LUT scaling when multiplexing 8 readout resonators per feedline.",
+      "comp-nokia-bell": "Your fixed-point VHDL DSP optimization techniques overlap with Nokia Bell Labs' ultra-low-latency 6G baseband beamforming."
+    }
+  },
+  {
+    "id": "app-04",
+    "name": "Mateo Rojas",
+    "role": "Power Electronics & V2G Firmware Architect",
+    "origin": "Moved to Espoo from Santiago, Chile · 6 yrs experience",
+    "avatarInitials": "MR",
+    "persona": "Builder / Engineer",
+    "cluster": "CleanTech & Smart Grid",
+    "competenceScore": 92,
+    "legacyLinkedInScore": 54,
+    "fluffIndex": 11,
+    "evidenceCategory": "Redacted Enterprise NDA Vignette",
+    "alignmentType": "Direct Bottleneck Match",
+    "demonstratedMechanism": "Adaptive notch filter on STM32H7 ADC sampling loop synchronized to PWM carrier frequency to suppress SiC MOSFET switching harmonics during cold-weather ISO 15118 PLC handshakes.",
+    "status": "pending",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "humanReviewerNote": "",
+    "linkedInSummaryClaim": "Spanish/English bilingual profile focused on industrial inverter maintenance and STM32 firmware; missing standard Nordic recruiter keywords.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "While deploying 350kW DC fast chargers in high-altitude Andean mining sites (-22°C overnight), ISO 15118 PLC (Power Line Communication) modems suffered 18% packet corruption from SiC MOSFET switching harmonics during cold-battery preconditioning ramps. I implemented an adaptive notch filter on the STM32H7 ADC sampling loop synchronized to the PWM carrier frequency, and built a stateful session-resume cache so TLS handshakes didn't drop during contactor switching.",
+    "verifiedArtifacts": [
+      {
+        "title": "iso15118-cold-weather-plc-resilience",
+        "type": "Embedded C / STM32H7 Firmware & Oscilloscope Captures",
+        "url": "https://github.com/mrojas-power/iso15118-plc-filter",
+        "verificationNote": "Contains real differential probe FFT captures of SiC switching noise and STM32H7 DMA filter code (redacted of employer IP).",
+        "authenticityScore": 94
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Redacted Enterprise NDA Vignette + Anonymized Oscilloscope FFT traces.\n2. Propositional Triad: [Problem: SiC MOSFET harmonics corrupting ISO 15118 PLC in -22°C] → [Mechanism: PWM-synchronized STM32H7 ADC notch filter + stateful TLS cache] → [Outcome: Eliminated session drops without hardware redesign].\n3. Room Coverage: High-priority match for Kempower Espoo R&D's winter grid telemetry team.\n4. Human Review Recommendation: Strongly recommend human curator approval.",
+    "strengths": [
+      "ISO 15118 / OCPP 2.0.1 fast-charger protocol resilience in sub-zero conditions",
+      "STM32H7 real-time DSP harmonic filtering around SiC power stages",
+      "Hands-on high-power field debugging"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Preventing SiC MOSFET switching harmonics from corrupting ISO 15118-20 bidirectional V2G sessions in sub-zero Nordic winters.",
+    "radarCoords": { "x": 32, "y": 68 },
+    "sparks": {
+      "comp-kempower": "Both you and Mikko Virtanen at Kempower are fighting sub-zero ISO 15118 TLS session drops! Show Mikko how your PWM-synchronized notch filter suppressed SiC switching harmonics at -22°C.",
+      "app-01": "Compare your STM32H7 DMA interrupt latency guarantees with Priya's embedded Rust ring buffers."
+    }
+  },
+  {
+    "id": "app-05",
+    "name": "Aino Mäkinen",
+    "role": "Geospatial GPU Compute & SAR Imaging Engineer",
+    "origin": "Tapiola, Espoo",
+    "avatarInitials": "AM",
+    "persona": "Builder / Engineer",
+    "cluster": "Sovereign AI & Cloud Infra",
+    "competenceScore": 91,
+    "legacyLinkedInScore": 72,
+    "fluffIndex": 12,
+    "evidenceCategory": "Verified Public Code / Benchmark",
+    "alignmentType": "Direct Bottleneck Match",
+    "demonstratedMechanism": "CUDA Graphs with double-buffered GPUDirect Storage (GDS) NVMe streaming + warp-shuffle kernel fusion using FP16 phase LUTs, reducing 45GB SAR processing from 14m to 2m 10s.",
+    "status": "pending",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "humanReviewerNote": "",
+    "linkedInSummaryClaim": "HPC Software Engineer specializing in CUDA, Vulkan compute shaders, and satellite remote sensing pipelines.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "Our time-domain backprojection kernel for X-band Synthetic Aperture Radar (SAR) strips was bottlenecked by PCIe Gen4 host-to-device transfers when processing 45GB raw phase history files on single L40S GPUs. I refactored the pipeline to use CUDA Graphs with double-buffered GPUDirect Storage (GDS) NVMe streaming and fused the range-Doppler phase interpolation into a single warp-shuffle kernel using FP16 phase lookup tables, cutting processing time from 14 minutes to 2m 10s.",
+    "verifiedArtifacts": [
+      {
+        "title": "fast-sar-backprojection-cuda",
+        "type": "CUDA C++ & Python Nsight Compute Profiles",
+        "url": "https://github.com/ainomakinen/fast-sar-backprojection-cuda",
+        "verificationNote": "Verified Nsight Compute roofline profiles demonstrating 88% memory bandwidth utilization.",
+        "authenticityScore": 96
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Verified Public CUDA code + Nsight Compute roofline benchmarks.\n2. Propositional Triad: [Problem: PCIe Gen4 bottleneck during 45GB SAR phase transfers] → [Mechanism: GPUDirect NVMe double-buffering + warp-shuffle FP16 kernel fusion] → [Outcome: Reduced processing from 14m to 2m 10s at 88% memory bandwidth].\n3. Room Coverage: Exact fit for ICEYE Otaniemi's sub-9-minute flood and ice mapping pipeline.\n4. Human Review Recommendation: Recommend admission for Sovereign Cloud / Orbital room cluster.",
+    "strengths": [
+      "CUDA kernel fusion & GPUDirect NVMe streaming",
+      "Synthetic Aperture Radar (SAR) phase history processing",
+      "Nsight Compute roofline optimization"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Streaming out-of-core SAR phase history tiles directly from NVMe to GPU shared memory for sub-3-minute Arctic sea-ice mapping.",
+    "radarCoords": { "x": 71, "y": 67 },
+    "sparks": {
+      "comp-iceye": "Your GPUDirect Storage + warp-shuffle CUDA backprojection kernel cut 45GB SAR processing to 2m 10s—ask Tomasz at ICEYE how they balance FP16 phase LUT precision against vessel wake detection.",
+      "comp-iqm": "Discuss high-throughput scientific data streaming between FPGA digitizers and GPU memory with Dr. Heikki Rantanen."
+    }
+  },
+  {
+    "id": "app-06",
+    "name": "Elena Rostova",
+    "role": "Ultra-Low-Power Biomedical DSP & Edge TinyML Researcher",
+    "origin": "Leppävaara, Espoo · Former ETH Zurich",
+    "avatarInitials": "ER",
+    "persona": "Researcher",
+    "cluster": "Bio & HealthTech",
+    "competenceScore": 89,
+    "legacyLinkedInScore": 64,
+    "fluffIndex": 14,
+    "evidenceCategory": "Peer-Reviewed Research / Poster",
+    "alignmentType": "Complementary Domain Capability",
+    "demonstratedMechanism": "Two-stage analog/digital wake-up cascade (18uW analog R-peak trigger + LMS adaptive filter on accelerometer) on ARM Cortex-M55, extending patch battery life from 19h to 6.5 days.",
+    "status": "approved",
+    "reviewedBy": "Melissa L. (City of Espoo)",
+    "reviewedAt": "2026-11-13 20:12",
+    "humanReviewerNote": "Great fit for VTT HealthTech & wearable diagnostics cluster.",
+    "linkedInSummaryClaim": "Biomedical Signal Processing Engineer working on wearable sensors and TinyML.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "Continuous atrial fibrillation detection on a coin-cell wearable patch had a strict 450 microwatt power budget on an ARM Cortex-M55 + Ethos-U55 microNPU. Running a full 1D-CNN continuously drained the battery in 19 hours. I designed a two-stage wake-up cascade: an analog front-end R-peak interval variance trigger drawing 18uW wakes the microNPU only during irregular RR-intervals, paired with an LMS adaptive filter driven by the 3-axis accelerometer to strip motion artifacts prior to classification. Battery life reached 6.5 days at 98.4% sensitivity.",
+    "verifiedArtifacts": [
+      {
+        "title": "cmsis-nn-ecg-motion-cascade",
+        "type": "C / CMSIS-NN Firmware & Otii Arc Power Profiles",
+        "url": "https://github.com/erostova-bio/cmsis-nn-ecg-motion-cascade",
+        "verificationNote": "Contains Otii Arc microampere current traces and MIT-BIH Noise Stress Test evaluation scripts.",
+        "authenticityScore": 93
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Published Research Poster + Otii Arc microampere power profiles.\n2. Propositional Triad: [Problem: 450uW power budget drained battery in 19h] → [Mechanism: 18uW analog trigger cascade + accelerometer LMS motion filter] → [Outcome: Extended wear to 6.5 days with 98.4% sensitivity].\n3. Room Coverage: High synergy with VTT Biosensors & HealthTech's graphene patch trials.\n4. Human Review Recommendation: Approved for Bio/MedTech cluster balance.",
+    "strengths": [
+      "Sub-milliwatt Cortex-M55 / CMSIS-NN TinyML deployment",
+      "Accelerometer-coupled LMS motion artifact cancellation",
+      "Hardware power profiling (Otii Arc)"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Sub-500uW adaptive motion-artifact removal and on-patch personalization for flexible epidermal biosensors.",
+    "radarCoords": { "x": 45, "y": 54 },
+    "sparks": {
+      "comp-vtt-health": "Your 18uW R-peak wake-up cascade + LMS motion artifact filter on Cortex-M55 is the exact architecture Dr. Sanna Korhonen at VTT needs for their 72-hour graphene patch trials!",
+      "app-01": "Exchange notes with Priya on INT8 quantization calibration drift on constrained edge NPUs."
+    }
+  },
+  {
+    "id": "app-07",
+    "name": "Chadwick 'CryptoAI' Vance",
+    "role": "CEO & Founder @ HyperAgentic Web4 Talent DAO",
+    "origin": "Digital Nomad",
+    "avatarInitials": "CV",
+    "persona": "Startup Founder",
+    "cluster": "Sovereign AI & Cloud Infra",
+    "competenceScore": 24,
+    "legacyLinkedInScore": 91,
+    "fluffIndex": 88,
+    "evidenceCategory": "Self-Reported Claims Only",
+    "alignmentType": "Exploration & High Learning Agility",
+    "demonstratedMechanism": "Unsubstantiated marketing claims ('infinite horizontal scalability with zero latency') without physical mechanisms or engineering trade-offs.",
+    "status": "flagged",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "humanReviewerNote": "",
+    "linkedInSummaryClaim": "Serial Disruptor | Building the Uber of Decentralized AI Recruitment Agents | Ex-Stealth | Advisor | Keynote Speaker | DM for Enterprise Partnerships.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "When scaling our autonomous multi-agent swarm to millions of concurrent token streams, traditional legacy cloud paradigms couldn't keep up with our exponential viral growth. We pivoted to a decentralized zero-knowledge agentic mesh layer powered by proprietary prompt engineering and viral tokenomics, unlocking infinite horizontal scalability with zero latency.",
+    "verifiedArtifacts": [
+      {
+        "title": "Pitch Deck Landing Page (No Product / Waitlist Only)",
+        "type": "Framer Template Landing Page",
+        "url": "https://hyperagentic-web4-dao.example.com",
+        "verificationNote": "Template site created 4 days ago; claims 'infinite horizontal scalability with zero latency' (physically impossible).",
+        "authenticityScore": 12
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Self-reported claims only. No functional architecture or empirical verification.\n2. Propositional Triad: Incomplete. Violates physical constraints ('infinite scalability with zero latency').\n3. Room Coverage: Poor alignment with deep-tech R&D tracks; high likelihood of event ticket waste.\n4. Human Review Recommendation: Flagged for curator review.",
+    "strengths": [
+      "Pitch copywriting"
+    ],
+    "risksOrFlags": [
+      "88% AI Fluff Index: Unverifiable buzzword claims",
+      "No technical artifact or working prototype"
+    ],
+    "currentExploration": "Pitching token presales to event attendees.",
+    "radarCoords": { "x": 85, "y": 14 },
+    "sparks": {
+      "comp-iceye": "Flagged profile: High risk of non-technical sales pitching."
+    }
+  },
+  {
+    "id": "app-08",
+    "name": "Kenji Takahashi",
+    "role": "Autonomous Mobile Robot (AMR) SLAM & LiDAR Fusion Lead",
+    "origin": "Matinkylä, Espoo · Relocated from Osaka",
+    "avatarInitials": "KT",
+    "persona": "Builder / Engineer",
+    "cluster": "Edge AI & Robotics",
+    "competenceScore": 90,
+    "legacyLinkedInScore": 58,
+    "fluffIndex": 8,
+    "evidenceCategory": "Redacted Enterprise NDA Vignette",
+    "alignmentType": "Complementary Domain Capability",
+    "demonstratedMechanism": "Tightly-coupled GTSAM factor graph fusing wheel encoders, 200Hz IMU, and retro-reflectivity intensity filtering to reject specular glass returns, cutting drift from 42cm to <1.8cm/100m on CPU.",
+    "status": "pending",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "humanReviewerNote": "",
+    "linkedInSummaryClaim": "Robotics Engineer (C++17, Eigen, Ceres Solver, 3D LiDAR SLAM). Mostly Japanese patent links and sparse English summary.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "In dynamic warehouse corridors with glass walls and moving forklifts, our 3D LiDAR ND-matching odometry drifted up to 42cm over 100m when 60% of scan points reflected off glass or dynamic actors. I integrated a tightly-coupled factor graph (GTSAM) fusing wheel encoder pre-integration, 200Hz IMU, and an intensity-return retro-reflectivity filter that rejects specular glass returns prior to voxel downsampling. Drift dropped to <1.8cm per 100m on an Intel i5 NUC without GPU.",
+    "verifiedArtifacts": [
+      {
+        "title": "gtsam-specular-lidar-inertial-odometry",
+        "type": "C++17 ROS2 Package & KITTI/Warehouse Rosbag Benchmarks",
+        "url": "https://github.com/ktakahashi-slam/specular-lio-sam",
+        "verificationNote": "Clean C++17 codebase with Eigen/GTSAM factor graphs and trajectory APE/RPE evaluation scripts (redacted of Japanese employer IP).",
+        "authenticityScore": 95
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Redacted Enterprise NDA Vignette + Verified C++17 testbenches.\n2. Propositional Triad: [Problem: Specular glass reflections caused 42cm/100m LiDAR drift] → [Mechanism: Retro-reflectivity filter + GTSAM wheel/IMU factor graph] → [Outcome: Reduced drift to <1.8cm/100m on CPU without GPU].\n3. Room Coverage: High-value complementary capability for Nokia Bell Labs and Espoo autonomous robotics ecosystem.\n4. Human Review Recommendation: Strongly recommend approval for Edge AI room diversity.",
+    "strengths": [
+      "Tightly-coupled 3D LiDAR-Inertial-Wheel factor graphs (C++17 / GTSAM)",
+      "Specular glass & dynamic obstacle rejection in industrial environments",
+      "CPU-efficient real-time odometry"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Multi-robot collaborative 3D scene graphs over low-bandwidth industrial Wi-Fi/6G.",
+    "radarCoords": { "x": 18, "y": 34 },
+    "sparks": {
+      "comp-nokia-bell": "Your GTSAM factor-graph SLAM runs in real time on a CPU while rejecting glass reflections—ask Kaisa at Nokia Bell Labs how they fuse local robot odometry with ceiling-mounted 6G spatial anchors.",
+      "app-01": "Combine Priya's zero-copy CUDA camera pipeline with your LiDAR-Inertial GTSAM factor graph for full 6-DoF warehouse autonomy."
+    }
+  },
+  {
+    "id": "app-09",
+    "name": "Sami Hämäläinen",
+    "role": "Distributed Storage & High-Throughput Rust Systems Architect",
+    "origin": "Kivenlahti, Espoo",
+    "avatarInitials": "SH",
+    "persona": "Domain Specialist",
+    "cluster": "Sovereign AI & Cloud Infra",
+    "competenceScore": 87,
+    "legacyLinkedInScore": 76,
+    "fluffIndex": 15,
+    "evidenceCategory": "Verified Public Code / Benchmark",
+    "alignmentType": "Direct Bottleneck Match",
+    "demonstratedMechanism": "Linux io_uring storage engine with O_DIRECT bypass, custom thread-per-core shard pinning, and AVX-512 Reed-Solomon erasure coding, cutting p99 write latency from 480ms to 14ms at 120Gbps.",
+    "status": "approved",
+    "reviewedBy": "Marika K. (City of Espoo)",
+    "reviewedAt": "2026-11-13 20:30",
+    "humanReviewerNote": "Strong local systems architect.",
+    "linkedInSummaryClaim": "Principal Systems Engineer building io_uring storage engines and zero-trust sovereign cloud infrastructure in Rust.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "When ingesting 120Gbps of multi-sensor telemetry into our S3-compatible object store on Linux, standard tokio epoll + kernel page-cache buffered I/O caused p99 tail latency spikes of 480ms during background compaction. I rewrote the storage engine around Linux io_uring with O_DIRECT bypass, custom thread-per-core shard pinning, and Reed-Solomon erasure coding in AVX-512, bringing p99 write latency down to 14ms.",
+    "verifiedArtifacts": [
+      {
+        "title": "uring-shard-store (Rust Thread-Per-Core Storage Engine)",
+        "type": "GitHub Crate · 290 Stars",
+        "url": "https://github.com/shamala-sys/uring-shard-store",
+        "verificationNote": "Includes fio benchmark comparisons and flamegraphs verifying zero kernel lock contention.",
+        "authenticityScore": 94
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Verified Public Crate + fio benchmark traces.\n2. Propositional Triad: [Problem: 480ms p99 latency spikes during 120Gbps S3 ingest] → [Mechanism: Linux io_uring + O_DIRECT + thread-per-core AVX-512 erasure] → [Outcome: Reduced p99 to 14ms].\n3. Room Coverage: Direct alignment with ICEYE's multi-terabyte SAR downlink telemetry bottlenecks.\n4. Human Review Recommendation: Approved.",
+    "strengths": [
+      "Linux io_uring & thread-per-core Rust storage engines",
+      "AVX-512 Reed-Solomon erasure coding",
+      "Tail-latency elimination at 100Gbps+ ingest"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Zero-copy NVMe-oF tile streaming for petabyte-scale geospatial and AI training datasets.",
+    "radarCoords": { "x": 80, "y": 64 },
+    "sparks": {
+      "comp-iceye": "Your io_uring thread-per-core object store solved 480ms p99 compaction spikes—ask Tomasz at ICEYE how out-of-core SAR tile streaming hits their S3 object store during peak satellite passes.",
+      "app-05": "Pair your io_uring NVMe ingest engine with Aino's GPUDirect Storage SAR backprojection kernels."
+    }
+  },
+  {
+    "id": "app-10",
+    "name": "Noora Lindström",
+    "role": "Battery Management Systems (BMS) & Electrochemical Modeler",
+    "origin": "Olari, Espoo · Aalto MSc Graduate",
+    "avatarInitials": "NL",
+    "persona": "Researcher",
+    "cluster": "CleanTech & Smart Grid",
+    "competenceScore": 85,
+    "legacyLinkedInScore": 69,
+    "fluffIndex": 13,
+    "evidenceCategory": "Applied Reasoning (Junior / Student)",
+    "alignmentType": "Complementary Domain Capability",
+    "demonstratedMechanism": "Dual Unscented Kalman Filter (DUKF) coupled with online fractional-order circuit model in 120KB RAM on Infineon AURIX TriCore MCU, keeping SoC error <1.9% at -25°C.",
+    "status": "approved",
+    "reviewedBy": "Melissa L. (City of Espoo)",
+    "reviewedAt": "2026-11-13 20:45",
+    "humanReviewerNote": "Strong emerging talent; excellent problem decomposition in sub-zero battery modeling.",
+    "linkedInSummaryClaim": "Battery Systems Engineer focusing on LFP/NMC state-of-health estimation and Kalman filtering.",
+    "scenarioPrompt": "Describe a hard physical or compute constraint you hit in a real system and the exact architectural trade-off you made to solve it.",
+    "scenarioAnswer": "Standard Extended Kalman Filters (EKF) for State-of-Charge (SoC) estimation on LFP battery packs diverged by up to 14% during sub-zero (-15°C) high-C-rate regenerative braking due to flat open-circuit voltage plateaus and non-linear lithium-plating impedance. I implemented a Dual Unscented Kalman Filter (DUKF) coupled with an online fractional-order equivalent circuit model running in 120KB RAM on an Infineon AURIX TriCore MCU, holding SoC error below 1.9% down to -25°C.",
+    "verifiedArtifacts": [
+      {
+        "title": "aurix-dukf-cold-lfp-bms (University Capstone Project)",
+        "type": "MATLAB/Simulink C-Codegen & Climatic Chamber Test Logs",
+        "url": "https://github.com/nlindstrom-bms/aurix-dukf-lfp",
+        "verificationNote": "Validated against -25°C climate chamber drive-cycle datasets in university test facility.",
+        "authenticityScore": 91
+      }
+    ],
+    "nemotronReasoning": "1. Evidence Classification: Applied Reasoning / University Capstone Project (Junior Talent Pathway).\n2. Propositional Triad: [Problem: LFP flat OCV curve diverged 14% in -15°C regen] → [Mechanism: DUKF + fractional-order circuit in 120KB RAM on AURIX MCU] → [Outcome: Held error <1.9% down to -25°C].\n3. Room Coverage: High complementary value for Kempower Espoo R&D's sub-zero charger derating.\n4. Human Review Recommendation: Approved for CleanTech room coverage.",
+    "strengths": [
+      "Sub-zero LFP/NMC State-of-Charge Dual Unscented Kalman Filtering",
+      "Infineon AURIX TriCore safety MCU deployment",
+      "Lithium-plating impedance detection"
+    ],
+    "risksOrFlags": [],
+    "currentExploration": "Real-time lithium-plating impedance detection during fast DC charging in -25°C Nordic conditions.",
+    "radarCoords": { "x": 21, "y": 78 },
+    "sparks": {
+      "comp-kempower": "Your AURIX DUKF model detects lithium-plating onset at -25°C—ask Mikko at Kempower how their chargers negotiate dynamic current derating when a vehicle BMS reports cold-temperature voltage sag.",
+      "app-04": "Combine your cold-LFP electrochemical state estimator with Mateo's ISO 15118 PLC hardware layer."
+    }
+  }
+]

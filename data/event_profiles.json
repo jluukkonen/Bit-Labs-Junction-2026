@@ -1,0 +1,37 @@
+[
+  {
+    "id": "espoo-deeptech-2026",
+    "title": "Espoo DeepTech & AI Innovation Forum 2026",
+    "date": "November 26, 2026 · Otaniemi & Dipoli (Hybrid)",
+    "format": "Hybrid (In-Person + Online Topic Rooms)",
+    "applicantCount": 542,
+    "historicalPeakCount": 5000,
+    "venueCapacity": 150,
+    "description": "Flagship City of Espoo competence and matchmaking event connecting international engineering talent, researchers, and Espoo R&D companies across Edge AI, Quantum, CleanTech, and Autonomous Systems.",
+    "clusters": [
+      "Edge AI & Robotics",
+      "CleanTech & Smart Grid",
+      "Quantum & Semiconductors",
+      "Bio & HealthTech",
+      "Sovereign AI & Cloud Infra"
+    ],
+    "curationPolicy": "Mandatory Human-in-the-Loop final verification. AI evaluates demonstrated project artifacts and concrete scenario responses while filtering out synthetic LinkedIn buzzword inflation."
+  },
+  {
+    "id": "talent-espoo-global-2026",
+    "title": "Talent Espoo: International Engineering & Scaleup Summit",
+    "date": "December 10, 2026 · Keilaniemi Innovation Hub",
+    "format": "In-Person",
+    "applicantCount": 1480,
+    "historicalPeakCount": 5000,
+    "venueCapacity": 350,
+    "description": "High-volume international talent and enterprise R&D matchmaking event focused on matching verified problem-solvers with growing Espoo industrial and software scaleups.",
+    "clusters": [
+      "Sovereign AI & Cloud Infra",
+      "CleanTech & Smart Grid",
+      "Edge AI & Robotics",
+      "Bio & HealthTech"
+    ],
+    "curationPolicy": "Priority given to verifiable build artifacts and domain problem-solving over generic CV formatting."
+  }
+]
