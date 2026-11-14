@@ -8,6 +8,8 @@ import {
   UserPlus,
   RefreshCw,
   ArrowRight,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { Applicant, LiveTriageResult } from '../types';
 import { deJargonizeCompanyNeed, runLiveNemotronTriage } from '../services/nemotronService';
@@ -38,6 +40,7 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [triageResult, setTriageResult] = useState<LiveTriageResult | null>(null);
   const [addedToQueue, setAddedToQueue] = useState(false);
+  const [showReasoningTrace, setShowReasoningTrace] = useState(false);
 
   // Company De-Jargonizer State
   const [companyName, setCompanyName] = useState('Nordic GridScale Robotics Oy (Espoo)');
@@ -56,6 +59,7 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
   const loadPreset = (type: 'builder' | 'spammer') => {
     setTriageResult(null);
     setAddedToQueue(false);
+    setShowReasoningTrace(false);
     if (type === 'builder') {
       setName('Dr. Tariq Al-Mansoor');
       setRole('Embedded Silicon & RISC-V Accelerator Architect');
@@ -88,6 +92,7 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
   const handleRunEvaluation = async () => {
     setIsEvaluating(true);
     setAddedToQueue(false);
+    setShowReasoningTrace(false);
     try {
       const res = await runLiveNemotronTriage({
         name,
@@ -176,22 +181,20 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Mode Switcher Bar */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-[#0066B3]" /> Two-Sided Live Intake &amp; De-Jargonizer
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:px-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5">
+          <Cpu className="w-4 h-4 text-[#0066B3] shrink-0" />
+          <h3 className="text-sm font-bold text-slate-900">
+            Live Intake &amp; De-Jargonizer Sandbox
           </h3>
-          <p className="text-xs text-slate-600 mt-0.5">
-            Verify builder competence from real artifacts or translate corporate HR ads into concrete engineering needs.
-          </p>
         </div>
 
-        <div className="inline-flex items-center p-1 rounded-lg bg-slate-100 border border-slate-200 shrink-0">
+        <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 shrink-0">
           <button
             onClick={() => setMode('applicant')}
-            className={`px-3.5 py-2 rounded-md text-xs font-semibold flex items-center gap-1.5 transition ${
+            className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
               mode === 'applicant'
                 ? 'bg-[#0066B3] text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
@@ -201,7 +204,7 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
           </button>
           <button
             onClick={() => setMode('company')}
-            className={`px-3.5 py-2 rounded-md text-xs font-semibold flex items-center gap-1.5 transition ${
+            className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
               mode === 'company'
                 ? 'bg-[#FFC72C] text-slate-950 shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
@@ -213,147 +216,147 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
       </div>
 
       {mode === 'applicant' ? (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Input Column */}
-          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#00508F]">
-                Applicant Submission Form
+          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+              <span className="text-sm font-bold text-slate-900">
+                Applicant Submission
               </span>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => loadPreset('builder')}
-                  className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold hover:bg-emerald-100 transition"
+                  className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold hover:bg-emerald-100 transition"
                 >
-                  Preset: DeepTech Builder
+                  DeepTech Builder
                 </button>
                 <button
                   onClick={() => loadPreset('spammer')}
-                  className="px-2.5 py-1 rounded-md bg-rose-50 text-rose-700 border border-rose-200 text-[11px] font-semibold hover:bg-rose-100 transition"
+                  className="px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 border border-rose-200 text-xs font-semibold hover:bg-rose-100 transition"
                 >
-                  Preset: Buzzword Spammer
+                  Buzzword Spammer
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Applicant Name
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Name
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Role / Specialty
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Role
                 </label>
                 <input
                   type="text"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                LinkedIn / CV Summary (Surface Keyword Signal)
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                LinkedIn / CV Summary
               </label>
               <textarea
                 rows={2}
                 value={linkedInClaim}
                 onChange={(e) => setLinkedInClaim(e.target.value)}
-                className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#00508F] mb-1">
-                Micro-Scenario Response (Hard Constraint &amp; Trade-Off)
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Micro-Scenario Response
               </label>
               <textarea
                 rows={4}
                 value={scenarioAnswer}
                 onChange={(e) => setScenarioAnswer(e.target.value)}
-                className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-emerald-800 mb-1">
-                Verified Artifact / Repository / Vignette
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Verified Artifact / Repository
               </label>
               <textarea
                 rows={2}
                 value={artifactText}
                 onChange={(e) => setArtifactText(e.target.value)}
-                className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
               />
             </div>
 
             <button
               onClick={handleRunEvaluation}
               disabled={isEvaluating}
-              className="w-full py-2.5 rounded-xl bg-[#0066B3] hover:bg-[#00508F] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-[#0066B3] hover:bg-[#00508F] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${isEvaluating ? 'animate-spin' : ''}`} />
               {isEvaluating
-                ? 'Running NVIDIA Nemotron 3.5 Super VL on B300...'
+                ? 'Evaluating on NVIDIA Nemotron B300...'
                 : 'Run Live NVIDIA Nemotron 3.5 Triage'}
             </button>
           </div>
 
           {/* Output Column */}
-          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
             {!triageResult ? (
-              <div className="h-80 flex flex-col items-center justify-center text-center px-6">
-                <div className="w-12 h-12 rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center mb-3">
+              <div className="h-96 flex flex-col items-center justify-center text-center px-6">
+                <div className="w-12 h-12 rounded-full bg-sky-50 border border-sky-100 flex items-center justify-center mb-4">
                   <Sparkles className="w-6 h-6 text-[#0066B3]" />
                 </div>
-                <h4 className="text-sm font-bold text-slate-900">
-                  Ready for Live B300 Evidence Evaluation
+                <h4 className="text-base font-bold text-slate-900">
+                  Ready for Live Evaluation
                 </h4>
-                <p className="text-xs text-slate-600 mt-1 max-w-sm">
-                  Select a preset or edit the fields on the left, then run live triage to extract the Propositional Triad and Fluff Index.
+                <p className="text-xs text-slate-500 mt-1.5 max-w-xs">
+                  Choose a preset or enter details on the left to test evidence extraction.
                 </p>
               </div>
             ) : (
-              <div className="space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+              <div className="space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                  <span className="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
                     <Cpu className="w-4 h-4" /> {triageResult.modelUsed}
                   </span>
                   <span className="text-xs font-mono text-slate-500">
-                    Latency: {triageResult.latencyMs}ms
+                    {triageResult.latencyMs}ms
                   </span>
                 </div>
 
                 {/* 3 Metric Cards */}
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3 text-center">
-                    <div className="text-[11px] font-semibold uppercase text-slate-600">Competence</div>
+                  <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3.5 text-center">
+                    <div className="text-[11px] font-semibold uppercase text-slate-500">Competence</div>
                     <div
                       className={`text-2xl font-bold font-mono mt-1 ${
                         triageResult.competenceScore >= 75 ? 'text-emerald-700' : 'text-rose-700'
                       }`}
                     >
-                      {triageResult.competenceScore}/100
+                      {triageResult.competenceScore}
                     </div>
                   </div>
-                  <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3 text-center">
-                    <div className="text-[11px] font-semibold uppercase text-slate-600">LinkedIn AI</div>
+                  <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3.5 text-center">
+                    <div className="text-[11px] font-semibold uppercase text-slate-500">LinkedIn AI</div>
                     <div className="text-2xl font-bold font-mono text-slate-800 mt-1">
                       {triageResult.legacyLinkedInScore}%
                     </div>
                   </div>
-                  <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3 text-center">
-                    <div className="text-[11px] font-semibold uppercase text-slate-600">Fluff Index</div>
+                  <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3.5 text-center">
+                    <div className="text-[11px] font-semibold uppercase text-slate-500">Fluff Index</div>
                     <div
                       className={`text-2xl font-bold font-mono mt-1 ${
                         triageResult.fluffIndex > 50 ? 'text-rose-700' : 'text-[#0066B3]'
@@ -364,11 +367,11 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
                   </div>
                 </div>
 
-                {/* AI Recommendation for Human Reviewer */}
-                <div className="bg-sky-50/70 border border-sky-200 rounded-xl p-3.5">
+                {/* Verdict Summary */}
+                <div className="bg-[#F8FAFC] border border-slate-200 border-l-4 border-l-[#0066B3] rounded-xl p-4 space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-bold text-[#00508F]">
-                      Triage Summary (Awaiting Human Decision):
+                      Triage Verdict
                     </span>
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${
@@ -380,34 +383,43 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
                       {triageResult.recommendedAction}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-800 mt-2 leading-relaxed">
+                  <p className="text-sm text-slate-900 leading-relaxed">
                     {triageResult.summaryVerdict}
                   </p>
                 </div>
 
-                {/* Nemotron Chain-of-Thought Trace */}
-                <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-3.5">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Verification Reasoning Trace:
-                  </div>
-                  <pre className="text-xs font-mono text-slate-700 whitespace-pre-wrap max-h-44 overflow-y-auto leading-relaxed">
-                    {triageResult.reasoningTrace}
-                  </pre>
-                </div>
-
                 {/* Push to Queue Button */}
-                <div className="pt-1">
-                  {addedToQueue ? (
-                    <div className="w-full py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4" /> Added to Curator Cockpit Inbox (Awaiting Human Sign-Off)
-                    </div>
-                  ) : (
-                    <button
-                      onClick={handlePushToQueue}
-                      className="w-full py-2.5 rounded-xl bg-[#0066B3] hover:bg-[#00508F] text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm"
-                    >
-                      <PlusCircle className="w-4 h-4" /> Send to Curator Cockpit Queue
-                    </button>
+                {addedToQueue ? (
+                  <div className="w-full py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-2">
+                    <CheckCircle2 className="w-4 h-4" /> Sent to Curator Cockpit Queue
+                  </div>
+                ) : (
+                  <button
+                    onClick={handlePushToQueue}
+                    className="w-full py-3 rounded-xl bg-[#0066B3] hover:bg-[#00508F] text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm"
+                  >
+                    <PlusCircle className="w-4 h-4" /> Send to Curator Cockpit Queue
+                  </button>
+                )}
+
+                {/* Collapsible AI Reasoning Trace */}
+                <div className="border-t border-slate-100 pt-4">
+                  <button
+                    onClick={() => setShowReasoningTrace((prev) => !prev)}
+                    className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#F8FAFC] hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 transition"
+                  >
+                    <span>Näytä AI-päätelyketju / View Reasoning Trace</span>
+                    {showReasoningTrace ? (
+                      <ChevronUp className="w-4 h-4 text-slate-500" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-500" />
+                    )}
+                  </button>
+
+                  {showReasoningTrace && (
+                    <pre className="mt-3 text-xs font-mono text-slate-700 bg-[#F8FAFC] border border-slate-200 rounded-xl p-4 whitespace-pre-wrap max-h-48 overflow-y-auto leading-relaxed">
+                      {triageResult.reasoningTrace}
+                    </pre>
                   )}
                 </div>
               </div>
@@ -416,72 +428,72 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
         </div>
       ) : (
         /* Mode 2: Company De-Jargonizer */
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-            <div className="text-xs font-bold uppercase tracking-wider text-amber-800 pb-3 border-b border-slate-200">
-              Translate HR Boilerplate into Concrete Engineering Needs
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
+            <div className="text-sm font-bold text-slate-900 pb-4 border-b border-slate-100">
+              Company Need De-Jargonizer
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Espoo Company Name
               </label>
               <input
                 type="text"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Raw Corporate HR Job Description
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                Raw HR Job Description
               </label>
               <textarea
                 rows={5}
                 value={rawHrText}
                 onChange={(e) => setRawHrText(e.target.value)}
-                className="w-full bg-[#F8FAFC] border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white"
+                className="w-full bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-[#0066B3] focus:bg-white transition"
               />
             </div>
             <button
               onClick={handleDejargonize}
               disabled={isDejargonizing}
-              className="w-full py-2.5 rounded-xl bg-[#FFC72C] hover:bg-[#F59E0B] text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-[#FFC72C] hover:bg-[#F59E0B] text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${isDejargonizing ? 'animate-spin' : ''}`} />
               {isDejargonizing
-                ? 'Extracting Real Engineering Bottlenecks...'
+                ? 'Extracting Engineering Bottlenecks...'
                 : 'Translate into Concrete Problem Space'}
             </button>
           </div>
 
-          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+          <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
             {!companyResult ? (
-              <div className="h-64 flex flex-col items-center justify-center text-center px-6">
-                <div className="w-12 h-12 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center mb-3">
+              <div className="h-72 flex flex-col items-center justify-center text-center px-6">
+                <div className="w-12 h-12 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center mb-4">
                   <Building2 className="w-6 h-6 text-amber-700" />
                 </div>
-                <h4 className="text-sm font-bold text-slate-900">
-                  Clarify What Espoo Teams Actually Need
+                <h4 className="text-base font-bold text-slate-900">
+                  Strip HR Buzzwords
                 </h4>
-                <p className="text-xs text-slate-600 mt-1 max-w-sm">
-                  Strip HR buzzwords to generate concrete Event Compass bottlenecks and a micro-scenario prompt.
+                <p className="text-xs text-slate-500 mt-1.5 max-w-xs">
+                  Translate corporate job boilerplate into clear technical bottlenecks and scenario prompts.
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4">
                   <div className="text-xs font-bold uppercase text-amber-800">
-                    De-Jargonized Engineering Problem Space
+                    Problem Space
                   </div>
-                  <p className="text-xs text-slate-900 mt-1.5 leading-relaxed font-medium">
+                  <p className="text-sm text-slate-900 mt-1.5 leading-relaxed font-medium">
                     {companyResult.actualProblemSpace}
                   </p>
                 </div>
 
                 <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-4">
                   <div className="text-xs font-bold uppercase text-[#00508F] mb-2">
-                    Extracted Technical Bottlenecks
+                    Technical Bottlenecks
                   </div>
                   <ul className="space-y-1.5">
                     {companyResult.bottlenecks.map((b, idx) => (
@@ -495,7 +507,7 @@ export const LiveIntakeSimulator: React.FC<LiveIntakeSimulatorProps> = ({
 
                 <div className="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4">
                   <div className="text-xs font-bold uppercase text-emerald-800">
-                    Recommended Scenario Prompt (Replaces CV Upload)
+                    Scenario Prompt
                   </div>
                   <p className="text-xs text-emerald-950 mt-1.5 italic font-medium">
                     “{companyResult.scenarioQuestionForApplicants}”
